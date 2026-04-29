@@ -338,23 +338,361 @@ const SHEETS_URL = "https://script.google.com/macros/s/AKfycbyxkrAwKDL7MiH5c4TU5
 // schedule: array of 7 booleans, index 0=Sunday ... 6=Saturday
 // goal: target % per month (e.g. 90)
 let state = {
-  habits: [
-    {id:1, name:'קום מוקדם', emoji:'☀️', schedule:[true,true,true,true,true,true,true], goal:90},
-    {id:2, name:'ספורט',     emoji:'💪', schedule:[false,true,false,true,false,true,false], goal:80},
-    {id:3, name:'קריאה 30 דק', emoji:'📚', schedule:[true,true,true,true,true,true,true], goal:80},
-    {id:4, name:'שתיית מים',  emoji:'💧', schedule:[true,true,true,true,true,true,true], goal:90},
-    {id:5, name:'מדיטציה',    emoji:'🧘', schedule:[true,true,true,true,true,true,true], goal:70},
-    {id:6, name:'אוכל בריא',  emoji:'🥗', schedule:[true,true,true,true,true,true,true], goal:80},
-    {id:7, name:'שינה עד 23:00', emoji:'😴', schedule:[true,true,true,true,true,true,true], goal:85},
-    {id:8, name:'עבודה על יעד', emoji:'🎯', schedule:[false,true,true,true,true,true,false], goal:80},
+  "habits": [
+    {
+      "id": 1,
+      "name": "תפילת שחרית",
+      "emoji": "☀️",
+      "schedule": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "goal": 80
+    },
+    {
+      "id": 2,
+      "name": "תפילת מנחה",
+      "emoji": "💪",
+      "schedule": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "goal": 80
+    },
+    {
+      "id": 3,
+      "name": "תפילת ערבית",
+      "emoji": "✍️",
+      "schedule": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "goal": 80
+    },
+    {
+      "id": 5,
+      "name": "ללמוד תורה 15 דקות",
+      "emoji": "📚",
+      "schedule": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "goal": 80
+    },
+    {
+      "id": 1775391373630,
+      "name": "להתקשר",
+      "emoji": "⭐",
+      "schedule": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "goal": 80
+    },
+    {
+      "id": 1775409669648,
+      "name": "ספירת עומר",
+      "emoji": "⭐",
+      "schedule": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "goal": 80
+    },
+    {
+      "id": 1776603748887,
+      "name": "יומן",
+      "emoji": "📝",
+      "schedule": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "goal": 80
+    },
+    {
+      "id": 1777371782775,
+      "name": "אימון",
+      "emoji": "🏃",
+      "schedule": [
+        false,
+        true,
+        false,
+        true,
+        false,
+        true,
+        false
+      ],
+      "goal": 70
+    },
+    {
+      "id": 1777410665780,
+      "name": "ליצור פוסטים",
+      "emoji": "🎨",
+      "schedule": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
+      "goal": 70
+    }
   ],
-  done: {},
-  archived: {},
-  reminderEnabled: false,
-  reminderTime: '20:00',
-  lastReminderDate: '',
-  currentYear: new Date().getFullYear(),
-  currentMonth: new Date().getMonth(),
+  "done": {
+    "1_2026-03-22": true,
+    "2_2026-04-05": true,
+    "1775391373630_2026-04-05": true,
+    "3_2026-04-05": true,
+    "5_2026-04-05": true,
+    "1775409669648_2026-04-05": true,
+    "1_2026-04-06": true,
+    "2_2026-04-06": true,
+    "3_2026-04-06": true,
+    "1775391373630_2026-04-06": true,
+    "1775409669648_2026-04-06": true,
+    "2_2026-04-09": true,
+    "3_2026-04-09": true,
+    "1775391373630_2026-04-09": true,
+    "1775409669648_2026-04-09": true,
+    "2_2026-04-08": true,
+    "3_2026-04-08": true,
+    "3_2026-04-07": true,
+    "2_2026-04-07": true,
+    "1_2026-04-08": true,
+    "1_2026-04-07": true,
+    "5_2026-04-08": true,
+    "5_2026-04-07": true,
+    "5_2026-04-06": true,
+    "1775391373630_2026-04-08": true,
+    "1775391373630_2026-04-07": true,
+    "1775409669648_2026-04-07": true,
+    "1775409669648_2026-04-08": true,
+    "1_2026-04-12": true,
+    "2_2026-04-12": true,
+    "3_2026-04-12": true,
+    "5_2026-04-12": true,
+    "1775391373630_2026-04-12": true,
+    "1_2026-04-10": true,
+    "1_2026-04-11": true,
+    "2_2026-04-10": true,
+    "2_2026-04-11": true,
+    "3_2026-04-10": true,
+    "3_2026-04-11": true,
+    "5_2026-04-10": true,
+    "5_2026-04-11": true,
+    "1775409669648_2026-04-10": true,
+    "1775409669648_2026-04-11": true,
+    "1775391373630_2026-04-10": true,
+    "1775391373630_2026-04-11": true,
+    "1_2026-04-13": true,
+    "1775409669648_2026-04-12": true,
+    "5_2026-04-13": true,
+    "2_2026-04-13": true,
+    "3_2026-04-13": true,
+    "1775409669648_2026-04-13": true,
+    "1775391373630_2026-04-13": true,
+    "1_2026-04-14": true,
+    "2_2026-04-14": true,
+    "3_2026-04-14": true,
+    "5_2026-04-14": true,
+    "1775391373630_2026-04-14": true,
+    "1775409669648_2026-04-14": true,
+    "1_2026-04-15": true,
+    "5_2026-04-15": true,
+    "2_2026-04-15": true,
+    "3_2026-04-15": true,
+    "1775391373630_2026-04-15": true,
+    "1775409669648_2026-04-15": true,
+    "1_2026-04-18": true,
+    "1_2026-04-19": true,
+    "2_2026-04-16": true,
+    "2_2026-04-17": true,
+    "2_2026-04-18": true,
+    "2_2026-04-19": true,
+    "3_2026-04-16": true,
+    "3_2026-04-17": true,
+    "3_2026-04-18": true,
+    "3_2026-04-19": true,
+    "5_2026-04-18": true,
+    "5_2026-04-19": true,
+    "1775391373630_2026-04-16": true,
+    "1775391373630_2026-04-17": true,
+    "1775391373630_2026-04-18": true,
+    "1775391373630_2026-04-19": true,
+    "1775409669648_2026-04-16": true,
+    "1775409669648_2026-04-17": true,
+    "1775409669648_2026-04-18": true,
+    "1775409669648_2026-04-19": true,
+    "1_2026-04-20": true,
+    "5_2026-04-20": true,
+    "2_2026-04-20": true,
+    "3_2026-04-20": true,
+    "1775391373630_2026-04-20": true,
+    "1775409669648_2026-04-20": true,
+    "1_2026-04-22": true,
+    "2_2026-04-22": true,
+    "1775391373630_2026-04-22": true,
+    "3_2026-04-22": true,
+    "1_2026-04-24": true,
+    "1_2026-04-25": true,
+    "1_2026-04-26": true,
+    "2_2026-04-21": true,
+    "2_2026-04-23": true,
+    "2_2026-04-24": true,
+    "2_2026-04-25": true,
+    "3_2026-04-21": true,
+    "3_2026-04-23": true,
+    "3_2026-04-24": true,
+    "3_2026-04-25": true,
+    "1775391373630_2026-04-21": true,
+    "1775391373630_2026-04-23": true,
+    "1775391373630_2026-04-24": true,
+    "1775391373630_2026-04-25": true,
+    "1775409669648_2026-04-21": true,
+    "1775409669648_2026-04-22": true,
+    "1775409669648_2026-04-23": true,
+    "1775409669648_2026-04-24": true,
+    "1775409669648_2026-04-25": true,
+    "5_2026-04-25": true,
+    "5_2026-04-24": true,
+    "5_2026-04-21": true,
+    "1_2026-04-27": true,
+    "2_2026-04-26": true,
+    "3_2026-04-26": true,
+    "1775409669648_2026-04-26": true,
+    "2_2026-04-27": true,
+    "1_2026-04-28": true,
+    "3_2026-04-27": true,
+    "1775391373630_2026-04-26": true,
+    "1775391373630_2026-04-27": true,
+    "1775409669648_2026-04-27": true,
+    "1777371782775_2026-04-27": true,
+    "1777371782775_2026-04-28": true,
+    "2_2026-04-28": true,
+    "3_2026-04-28": true,
+    "1775391373630_2026-04-28": true,
+    "1775409669648_2026-04-28": true,
+    "1777410665780_2026-04-28": true
+  },
+  "archived": {
+    "4": {
+      "id": 4,
+      "name": "שתיית מים",
+      "emoji": "💧",
+      "schedule": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "goal": 80
+    },
+    "6": {
+      "id": 6,
+      "name": "אוכל בריא",
+      "emoji": "🥗",
+      "schedule": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "goal": 80
+    },
+    "7": {
+      "id": 7,
+      "name": "שינה עד 23:00",
+      "emoji": "😴",
+      "schedule": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "goal": 80
+    },
+    "8": {
+      "id": 8,
+      "name": "עבודה על יעד",
+      "emoji": "🎯",
+      "schedule": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "goal": 80
+    },
+    "1774117695922": {
+      "id": 1774117695922,
+      "name": "",
+      "emoji": "⭐",
+      "schedule": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "goal": 80
+    }
+  },
+  "reminderEnabled": false,
+  "reminderTime": "20:00",
+  "lastReminderDate": "",
+  "currentYear": 2026,
+  "currentMonth": 3
 };
 
 // ════════════════════════════════════════════════
@@ -362,7 +700,7 @@ let state = {
 // ════════════════════════════════════════════════
 function saveState() {
   localStorage.setItem('ht_state', JSON.stringify(state));
-  fetch(SHEETS_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(state) }).catch(()=>{});
+  fetch(SHEETS_URL, { method:'POST', mode:'no-cors', body:JSON.stringify(state) }).catch(()=>{});
 }
 function loadState() {
   const s = localStorage.getItem('ht_state');
@@ -506,25 +844,13 @@ function habitBestStreak(hid) {
   return best;
 }
 
-// best habit this week (by completion %)
-function bestHabitThisWeek() {
-  const now = new Date();
-  const dayOfWeek_ = now.getDay(); // 0=Sun
-  const weekStart = new Date(now); weekStart.setDate(now.getDate() - dayOfWeek_); weekStart.setHours(0,0,0,0);
+// best habit by current streak
+function bestHabitByStreak() {
   let best = null;
   state.habits.forEach(h => {
-    let done = 0, total = 0;
-    for (let i = 0; i < 7; i++) {
-      const d = new Date(weekStart); d.setDate(weekStart.getDate()+i);
-      if (d > now) break;
-      const dk = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-      if (!isScheduled(h, dk)) continue;
-      total++;
-      if (isDone(h.id, dk)) done++;
-    }
-    const pct = total ? done/total : 0;
-    if (!best || pct > best.pct || (pct===best.pct && done > best.done)) {
-      best = {habit: h, pct, done, total};
+    const streak = habitCurrentStreak(h.id);
+    if (!best || streak > best.streak) {
+      best = {habit: h, streak};
     }
   });
   return best;
@@ -597,17 +923,19 @@ function renderTracker() {
   document.getElementById('stat-month').textContent = `${monthPct}%`;
   document.getElementById('stat-streak').textContent = `${streak} 🔥`;
 
-  // Best habit banner
-  const best = bestHabitThisWeek();
+  // Best habit banner — longest current streak
+  const best = bestHabitByStreak();
   const banner = document.getElementById('best-habit-banner');
-  if (best && best.total > 0) {
+  if (best && best.streak > 0) {
+    const bs = habitBestStreak(best.habit.id);
+    const crown = best.streak >= 7 ? '👑' : best.streak >= 3 ? '🔥' : '⭐';
     banner.innerHTML = `
       <div class="best-banner">
-        <div class="crown">${Math.round(best.pct*100) >= 80 ? '👑' : '⭐'}</div>
+        <div class="crown">${crown}</div>
         <div class="best-banner-text">
-          <div class="best-banner-label">הרגל מוביל השבוע</div>
+          <div class="best-banner-label">הרצף הכי ארוך כרגע</div>
           <div class="best-banner-name">${best.habit.emoji} ${best.habit.name}</div>
-          <div class="best-banner-stat">${best.done}/${best.total} ימים · ${Math.round(best.pct*100)}% השבוע</div>
+          <div class="best-banner-stat">${best.streak} ימים ברצף 🔥 · שיא אישי: ${bs}</div>
         </div>
       </div>`;
   } else { banner.innerHTML = ''; }
