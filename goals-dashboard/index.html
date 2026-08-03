@@ -20,6 +20,7 @@
       color:var(--ink);font:15px Arial,"Noto Sans Hebrew",sans-serif;overflow-x:hidden}
     button,input,textarea,select{font:inherit}
     button{cursor:pointer}
+    button:disabled{cursor:not-allowed;opacity:.45}
     button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #f5bd5688;outline-offset:2px}
     .app{max-width:620px;margin:auto;padding:18px 14px calc(104px + env(safe-area-inset-bottom))}
     header{text-align:center;padding:18px 0 14px}
@@ -63,8 +64,12 @@
     input,textarea,select{width:100%;border:1px solid var(--line);background:#fffaf5;color:var(--ink);border-radius:12px;padding:11px}
     textarea{min-height:82px;resize:vertical}
     .view{display:none}.view.active{display:block}
-    .notesPanel,.settingsPanel{padding:15px}
+    .notesPanel,.settingsPanel,.taskPanel,.taskHistoryPanel{padding:15px}
     .formGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.formGrid .wide{grid-column:1/-1}
+    .taskAdd{display:grid;grid-template-columns:1fr auto;gap:8px}.taskAdd .primary{white-space:nowrap}
+    .taskSummary{display:flex;align-items:center;justify-content:space-between;gap:12px;background:linear-gradient(135deg,#fff0dc,#ffe4d8);border-radius:16px;padding:12px 14px;margin:13px 0}.taskSummary b{font-size:22px;color:var(--terracotta)}.taskSummary span{color:var(--muted);font-size:12px}.taskSummaryProgress{width:94px;height:8px;border-radius:99px;background:#fff8f0;overflow:hidden}.taskSummaryProgress i{display:block;height:100%;background:var(--sage);border-radius:inherit}
+    .taskItem{display:flex;align-items:center;gap:10px;background:#fffaf5;border:1px solid var(--line);border-radius:16px;padding:10px;margin-top:8px}.taskItem.done{background:#f2f7f3;border-color:#d9e8df}.taskItem .checkBtn{width:46px;height:46px;border-radius:15px}.taskTitle{flex:1;min-width:0;font-weight:800;overflow-wrap:anywhere}.taskItem.done .taskTitle{text-decoration:line-through;color:#789184}.taskDelete{border:0;background:transparent;color:#b77968;width:44px;height:44px;border-radius:12px;font-size:18px}.taskDelete:hover{background:#f9e4df}
+    .taskHistoryPanel{margin-top:14px}.taskWeek{direction:ltr;display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:10px 0 15px}.taskDay{border:1px solid var(--line);background:#fff8f0;color:var(--muted);border-radius:12px;padding:7px 2px;min-width:0;min-height:84px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px}.taskDay.today{border-color:var(--gold)}.taskDay.selected{background:#ffe9da;border-color:var(--terracotta);color:var(--ink)}.taskDayBar{width:8px;height:34px;background:#f1ddcf;border-radius:99px;display:flex;align-items:flex-end;overflow:hidden}.taskDayBar i{display:block;width:100%;background:var(--sage);border-radius:inherit}.taskDay small{font-size:8px}.taskDay b{font-size:10px}.taskHistoryControls{display:grid;grid-template-columns:auto 1fr auto;gap:7px;align-items:center;margin-bottom:10px}.taskHistoryControls .softBtn{padding:8px}.taskHistoryDate{min-width:0;text-align:center}.taskHistoryLabel{color:var(--muted);font-size:11px;margin:4px 2px 8px}
     .noteComposer{background:#fff8f1;border:1px solid var(--line);border-radius:14px;padding:8px}.noteComposer textarea{border:0;background:#fffdf9;min-height:105px}.noteComposer textarea:focus-visible{outline-offset:0}
     .formatBar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:7px}.formatBtn{min-height:44px;padding:7px 11px;border:1px solid #ead3c2;background:#fff;color:#805746;font-size:12px}.formatBtn strong{font-size:16px}.formatHint{display:block;color:var(--muted);font-size:10px;line-height:1.45;padding:6px 3px 1px}
     .notePreview{margin-top:8px;padding:10px 12px;border-radius:12px;background:#fff;border:1px dashed #e3c8b5;color:var(--ink);line-height:1.6;font-size:13px}.notePreview:before{content:"תצוגה מקדימה";display:block;color:var(--muted);font-size:9px;font-weight:800;margin-bottom:4px}.notePreview.hidden{display:none}
@@ -72,7 +77,7 @@
     .insightCard{padding:13px;margin-top:10px}.insightTop{display:flex;align-items:flex-start;gap:8px}.insightText{flex:1;line-height:1.6;overflow-wrap:anywhere}.insightText div+div{margin-top:3px}.insightText ul,.notePreview ul{margin:6px 0;padding:0 20px 0 0}.insightText li,.notePreview li{margin:3px 0}.insightText strong,.notePreview strong{color:#9f493d;font-weight:900}.star{border:0;background:transparent;color:#c2a88f;font-size:22px;padding:0;min-width:32px}.star.on{color:var(--gold)}
     .insightMeta{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}.insightActions{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.chipBtn{min-height:36px;background:#fff0e6;color:#8d5544;padding:6px 9px;font-size:11px}
     .settingsGroup{margin-bottom:18px}.settingsGroup h2{font-size:16px;margin:0 0 10px}.settingRow{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px dashed var(--line)}.settingRow:last-child{border:0}.settingInfo{flex:1;min-width:0}.settingInfo b{display:block}.settingInfo small{display:block;color:var(--muted);margin-top:3px}
-    .bottomNav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(620px,100%);display:grid;grid-template-columns:repeat(3,1fr);background:#fffdf9ee;backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom));z-index:40;box-shadow:0 -8px 24px #8e4d2a14}
+    .bottomNav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(620px,100%);display:grid;grid-template-columns:repeat(4,1fr);background:#fffdf9ee;backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom));z-index:40;box-shadow:0 -8px 24px #8e4d2a14}
     .navBtn{border:0;background:transparent;color:var(--muted);min-height:54px;border-radius:14px;font-size:11px;font-weight:800}.navBtn span{display:block;font-size:20px;margin-bottom:2px}.navBtn.active{background:#ffe7da;color:var(--terracotta)}
     .modal{position:fixed;inset:0;background:#4e332b80;display:none;align-items:flex-end;justify-content:center;z-index:100;padding-top:30px}.modal.open{display:flex}.sheet{background:var(--card);width:min(620px,100%);max-height:91vh;overflow:auto;border-radius:24px 24px 0 0;padding:17px 16px calc(24px + env(safe-area-inset-bottom));box-shadow:0 -10px 40px #3f241f44}.sheetHead{display:flex;align-items:center;gap:10px;margin-bottom:10px}.sheetHead h2{flex:1;margin:0;font-size:19px}.closeBtn{border:0;background:#f6e8dc;color:var(--ink);width:44px;height:44px;border-radius:50%;font-size:20px}
     .freqFields{margin-top:10px}.daysPick{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:8px;direction:ltr}.pickDay{min-height:44px;border:1px solid var(--line);background:#fff5ed;color:var(--muted);border-radius:11px;font-weight:800}.pickDay.on{background:var(--terracotta);color:#fff;border-color:var(--terracotta)}
@@ -84,7 +89,8 @@
     .lock{position:fixed;inset:0;z-index:300;background:radial-gradient(circle at top,#ffd8bc,var(--cream) 55%);display:grid;place-items:center;padding:18px}.lock.hidden{display:none}.lockCard{width:min(410px,100%);background:var(--card);border:1px solid var(--line);border-radius:25px;box-shadow:var(--shadow);padding:22px}.lockIcon{font-size:40px;text-align:center}.lockCard h1{text-align:center;font-size:25px}.lockCard p{text-align:center;color:var(--muted);line-height:1.5}.lockError{color:#a24c3c;font-size:12px;min-height:18px;margin-top:6px}.privacyNote{background:#edf5f0;border-radius:13px;padding:11px;color:#4f7463;font-size:11px;line-height:1.5;margin:12px 0}
     .toast{position:fixed;left:50%;bottom:88px;transform:translate(-50%,20px);opacity:0;background:#563d32;color:#fff;padding:10px 17px;border-radius:99px;z-index:250;transition:.25s;pointer-events:none;max-width:90%;text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}
     .hidden{display:none!important}
-    @media(max-width:420px){.app{padding-right:10px;padding-left:10px}.todayHero{grid-template-columns:98px 1fr}.ring{width:90px;height:90px}.stats{gap:5px}.stat b{font-size:19px}.goalCard{padding:12px}.weekDays{gap:3px}.reviewHighlights{grid-template-columns:1fr}.formGrid{grid-template-columns:1fr}.formGrid .wide{grid-column:auto}.insightTools{grid-template-columns:1fr}.weeklyGrid{gap:5px}.miniStat{padding:9px 4px}}
+    @media(max-width:420px){.app{padding-right:10px;padding-left:10px}.todayHero{grid-template-columns:98px 1fr}.ring{width:90px;height:90px}.stats{gap:5px}.stat b{font-size:19px}.goalCard{padding:12px}.weekDays{gap:3px}.reviewHighlights{grid-template-columns:1fr}.formGrid{grid-template-columns:1fr}.formGrid .wide{grid-column:auto}.insightTools{grid-template-columns:1fr}.weeklyGrid{gap:5px}.miniStat{padding:9px 4px}.navBtn{font-size:10px}.taskWeek{gap:3px}.taskDay{min-height:80px}.taskHistoryControls .softBtn{font-size:11px}}
+    @media(max-width:350px){.taskAdd{grid-template-columns:1fr}.taskAdd .primary{width:100%}}
     @media(min-width:680px){.modal{align-items:center;padding:20px}.sheet{border-radius:24px;max-height:88vh}}
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
   </style>
@@ -133,6 +139,29 @@
       <section class="panel weekly" id="weeklyReview"></section>
     </section>
 
+    <section id="tasksView" class="view">
+      <div class="sectionHead"><h2>משימות היום</h2><small>חד־פעמיות ליום אחד</small></div>
+      <section class="panel taskPanel">
+        <form id="taskForm" class="taskAdd">
+          <input id="taskInput" maxlength="100" required autocomplete="off" aria-label="משימה חדשה" placeholder="מה צריך לעשות היום?">
+          <button class="primary">＋ משימה</button>
+        </form>
+        <div id="taskSummary" class="taskSummary"></div>
+        <div id="todayTasks"></div>
+      </section>
+      <section class="panel taskHistoryPanel">
+        <div class="sectionHead" style="margin-top:0"><h2>היסטוריית משימות</h2><small>כל יום נשמר</small></div>
+        <div id="taskWeek" class="taskWeek" aria-label="השלמת משימות בשבעת הימים האחרונים"></div>
+        <div class="taskHistoryControls">
+          <button type="button" class="softBtn" id="taskPrevDay" aria-label="היום הקודם">‹ הקודם</button>
+          <input id="taskHistoryDate" class="taskHistoryDate" type="date" aria-label="תאריך להצגת משימות">
+          <button type="button" class="softBtn" id="taskNextDay" aria-label="היום הבא">הבא ›</button>
+        </div>
+        <div id="taskHistoryLabel" class="taskHistoryLabel"></div>
+        <div id="taskHistory"></div>
+      </section>
+    </section>
+
     <section id="notesView" class="view">
       <div class="sectionHead"><h2>מה למדתי</h2><small>תובנות שהופכות לפעולה</small></div>
       <section class="panel notesPanel">
@@ -163,9 +192,9 @@
         <div class="settingsGroup"><h2>ארכיון</h2><div id="archiveList"></div></div>
         <div class="settingsGroup">
           <h2>פרטיות וגיבוי</h2>
-          <div class="privacyNote">☁ הנתונים בענן מוצפנים באמצעות הקוד האישי שלך. תוכן המטרות והתובנות אינו מופיע בקוד של GitHub ואינו נשמר כטקסט גלוי בענן.</div>
+          <div class="privacyNote">☁ הנתונים בענן מוצפנים באמצעות הקוד האישי שלך. תוכן המטרות, המשימות והתובנות אינו מופיע בקוד של GitHub ואינו נשמר כטקסט גלוי בענן.</div>
           <div class="settingRow"><div class="settingInfo"><b>גיבוי JSON</b><small>גיבוי מלא שאפשר לייבא חזרה</small></div><button class="softBtn" id="exportJson">הורדה</button></div>
-          <div class="settingRow"><div class="settingInfo"><b>ייצוא CSV</b><small>היסטוריית סימונים לפתיחה בגיליון</small></div><button class="softBtn" id="exportCsv">הורדה</button></div>
+          <div class="settingRow"><div class="settingInfo"><b>ייצוא CSV</b><small>היסטוריית מטרות ומשימות לפתיחה בגיליון</small></div><button class="softBtn" id="exportCsv">הורדה</button></div>
           <div class="settingRow"><div class="settingInfo"><b>ייבוא גיבוי</b><small>מחליף את הנתונים לאחר בדיקה</small></div><button class="softBtn" id="importBtn">ייבוא</button><input class="hidden" id="importFile" type="file" accept="application/json"></div>
           <div class="settingRow"><div class="settingInfo"><b>נעילה</b><small>נקה את הקוד מהזיכרון ודרוש כניסה מחדש</small></div><button class="softBtn" id="lockNow">נעל עכשיו</button></div>
         </div>
@@ -175,6 +204,7 @@
 
   <nav class="bottomNav" id="bottomNav" aria-label="ניווט ראשי">
     <button class="navBtn active" data-view="goals"><span>🎯</span>מטרות</button>
+    <button class="navBtn" data-view="tasks"><span>✅</span>משימות</button>
     <button class="navBtn" data-view="notes"><span>✨</span>תובנות</button>
     <button class="navBtn" data-view="settings"><span>⚙️</span>הגדרות</button>
   </nav>
@@ -208,7 +238,7 @@
     const DAY_NAMES=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
     const DAY_SHORT=['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ש׳'];
     const enc=new TextEncoder(),dec=new TextDecoder();
-    let state=null,cryptoKey=null,keySalt=null,remoteCandidate=null,lockMode='unlock',editingGoalId=null,editingNoteId=null,saveChain=Promise.resolve(),toastTimer;
+    let state=null,cryptoKey=null,keySalt=null,remoteCandidate=null,lockMode='unlock',editingGoalId=null,editingNoteId=null,selectedTaskDate=localDate(),saveChain=Promise.resolve(),toastTimer;
 
     function localDate(d=new Date()){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
     function fromKey(k){const [y,m,d]=k.split('-').map(Number);return new Date(y,m-1,d,12)}
@@ -247,7 +277,8 @@
         return {id:String(g.id||uid('g')),title:String(g.title||g.name||'מטרה'),createdAt:created,done,scheduleHistory:normalizeSchedule(g,created),pauseRanges:Array.isArray(g.pauseRanges)?g.pauseRanges:[],archivedAt:g.archivedAt||null};
       });
       const notes=(raw.notes||raw.learnings||[]).map(n=>({id:String(n.id||uid('n')),t:String(n.t||n.text||''),src:String(n.src||n.source||''),tag:String(n.tag||''),goalId:String(n.goalId||''),favorite:!!n.favorite,d:n.d||n.date||localDate()}));
-      return {version:3,rev:Number(raw.rev)||0,goals,notes,reviews:raw.reviews&&typeof raw.reviews==='object'?raw.reviews:{}};
+      const tasks=(raw.tasks||[]).map(t=>{const date=/^\d{4}-\d{2}-\d{2}$/.test(t.date||'')?t.date:localDate();return {id:String(t.id||uid('t')),title:String(t.title||t.t||'משימה'),date,done:!!t.done,createdAt:t.createdAt||`${date}T12:00:00`,completedAt:t.done?(t.completedAt||`${date}T12:00:00`):null}});
+      return {version:4,rev:Number(raw.rev)||0,goals,notes,tasks,reviews:raw.reviews&&typeof raw.reviews==='object'?raw.reviews:{}};
     }
     function scheduleOn(g,k){const hist=g.scheduleHistory||[];let result=hist[0]||{type:'days',days:[0,1,2,3,4,5,6],target:7};for(const x of hist){if(x.from<=k)result=x;else break}return result}
     function pausedOn(g,k){return (g.pauseRanges||[]).some(r=>k>=r.start&&(!r.end||k<=r.end))}
@@ -291,11 +322,11 @@
       const local=localCandidate();
       if(remote?.encrypted&&local?.encrypted)remoteCandidate=(Number(local.rev)>Number(remote.rev)?local:remote);
       else if(remote?.encrypted)remoteCandidate=remote;
-      else if(local?.encrypted&&!(remote?.goals||remote?.notes))remoteCandidate=local;
+      else if(local?.encrypted&&!(remote?.goals||remote?.notes||remote?.tasks))remoteCandidate=local;
       else remoteCandidate=remote||local;
       let legacy=null;try{legacy=JSON.parse(localStorage.getItem('goalsWarm')||'null')}catch{}
-      if(remoteCandidate?.encrypted){lockMode='unlock';$('lockTitle').textContent='המסלול שלך נעול';$('lockCopy').textContent='הזן את הקוד האישי כדי לפענח את המטרות והתובנות.';$('unlockBtn').textContent='פתיחת הדשבורד'}
-      else{lockMode='setup';remoteCandidate=remoteCandidate||legacy||{goals:[],notes:[]};$('lockTitle').textContent='הגדרת פרטיות';$('lockCopy').textContent='בחר קוד אישי חדש. הנתונים הקיימים יוצפנו לפני השמירה הבאה.';$('confirmWrap').classList.remove('hidden');$('passConfirm').required=true;$('unlockBtn').textContent='הצפנה ופתיחה'}
+      if(remoteCandidate?.encrypted){lockMode='unlock';$('lockTitle').textContent='המסלול שלך נעול';$('lockCopy').textContent='הזן את הקוד האישי כדי לפענח את המטרות, המשימות והתובנות.';$('unlockBtn').textContent='פתיחת הדשבורד'}
+      else{lockMode='setup';remoteCandidate=remoteCandidate||legacy||{goals:[],notes:[],tasks:[]};$('lockTitle').textContent='הגדרת פרטיות';$('lockCopy').textContent='בחר קוד אישי חדש. הנתונים הקיימים יוצפנו לפני השמירה הבאה.';$('confirmWrap').classList.remove('hidden');$('passConfirm').required=true;$('unlockBtn').textContent='הצפנה ופתיחה'}
       $('lockFields').classList.remove('hidden');setTimeout(()=>$('passInput').focus(),50);
     }
     async function unlock(pass){
@@ -336,6 +367,12 @@
       $('stats').innerHTML=[[`${todayDone}/${visible.length}`,'הושלמו היום'],[`${current.pct}%`,'עקביות 7 ימים'],[`${momentum>0?'+':''}${momentum}%`,'מול שבוע קודם']].map(([v,l])=>`<div class="stat"><b>${v}</b><span>${l}</span></div>`).join('');
     }
     function drawGoals(){const k=localDate(),active=activeGoals().filter(g=>!isPausedNow(g)),fixed=active.filter(g=>fixedScheduledOn(g,k)),flex=active.filter(g=>scheduleOn(g,k).type==='weekly');$('todayGoals').innerHTML=fixed.length?fixed.map(g=>goalCard(g)).join(''):'<div class="empty">אין מטרות קבועות להיום. אפשר להוסיף מטרה או ליהנות מיום מנוחה.</div>';$('flexGoalsWrap').classList.toggle('hidden',!flex.length);$('flexGoals').innerHTML=flex.map(g=>goalCard(g,true)).join('')}
+    function taskStats(k){const tasks=state.tasks.filter(t=>t.date===k),done=tasks.filter(t=>t.done).length;return {tasks,done,total:tasks.length,pct:tasks.length?Math.round(done/tasks.length*100):0}}
+    function taskCard(t,history=false){return `<article class="taskItem ${t.done?'done':''}"><button class="checkBtn ${t.done?'done':''}" data-toggle-task="${esc(t.id)}" aria-label="${t.done?'בטל השלמת משימה':'סמן משימה כהושלמה'}">${t.done?'✓':'○'}</button><div class="taskTitle">${esc(t.title)}${history?`<div class="goalMeta"><span class="badge ${t.done?'sage':''}">${t.done?'הושלמה':'לא הושלמה'}</span></div>`:''}</div><button class="taskDelete" data-delete-task="${esc(t.id)}" aria-label="מחיקת המשימה">×</button></article>`}
+    function drawTasks(){const today=localDate();if(!selectedTaskDate||selectedTaskDate>today)selectedTaskDate=today;const current=taskStats(today),history=taskStats(selectedTaskDate);$('taskSummary').innerHTML=`<div><b>${current.done}/${current.total}</b><span> הושלמו היום</span></div><div class="taskSummaryProgress" aria-label="${current.pct}% מהמשימות הושלמו"><i style="width:${current.pct}%"></i></div>`;$('todayTasks').innerHTML=current.total?current.tasks.sort((a,b)=>Number(a.done)-Number(b.done)||a.createdAt.localeCompare(b.createdAt)).map(t=>taskCard(t)).join(''):'<div class="empty">אין משימות חד־פעמיות להיום. אפשר להוסיף את הדבר הבא שחשוב לסיים.</div>';
+      const days=lastDays(7);$('taskWeek').innerHTML=days.map(k=>{const s=taskStats(k),day=fromKey(k);return `<button type="button" class="taskDay ${k===today?'today':''} ${k===selectedTaskDate?'selected':''}" data-task-date="${k}" aria-label="${fmtDate(k,{weekday:'long',day:'numeric',month:'long'})}: ${s.done} מתוך ${s.total} משימות הושלמו"><span class="taskDayBar"><i style="height:${s.total?Math.max(7,s.pct):0}%"></i></span><small>${DAY_SHORT[day.getDay()]}</small><b>${day.getDate()}</b></button>`}).join('');
+      $('taskHistoryDate').max=today;$('taskHistoryDate').value=selectedTaskDate;$('taskNextDay').disabled=selectedTaskDate>=today;$('taskHistoryLabel').textContent=`${fmtDate(selectedTaskDate,{weekday:'long',day:'numeric',month:'long',year:'numeric'})} · ${history.done}/${history.total} הושלמו`;$('taskHistory').innerHTML=history.total?history.tasks.sort((a,b)=>Number(a.done)-Number(b.done)||a.createdAt.localeCompare(b.createdAt)).map(t=>taskCard(t,true)).join(''):'<div class="empty">לא נשמרו משימות ביום הזה.</div>';
+    }
     function weekPerformance(g,wk){return performance(g,wk,wk===weekStart()?localDate():addDays(wk,6))}
     function drawWeekly(){const wk=weekStart(),prev=addDays(wk,-7),active=activeGoals().filter(g=>!isPausedNow(g)),cur=overall(wk,localDate(),active),old=overall(prev,addDays(prev,6),active),ranked=active.map(g=>({g,p:weekPerformance(g,wk)})).filter(x=>x.p.total).sort((a,b)=>b.p.pct-a.p.pct),best=ranked[0],attention=ranked[ranked.length-1],review=state.reviews[wk]||{};
       $('weeklyReview').innerHTML=`<div class="sectionHead" style="margin-top:0"><h2>סיכום שבועי</h2><small>${fmtDate(wk)}–${fmtDate(addDays(wk,6))}</small></div><div class="weeklyGrid"><div class="miniStat"><b>${cur.pct}%</b><span>עקביות השבוע</span></div><div class="miniStat"><b>${cur.done}/${cur.total}</b><span>השלמות מתוכננות</span></div><div class="miniStat"><b>${cur.pct-old.pct>0?'+':''}${cur.pct-old.pct}%</b><span>מול שבוע קודם</span></div></div><div class="reviewHighlights"><div class="highlight">הכי עקבית<b>${best?`${esc(best.g.title)} · ${best.p.pct}%`:'עדיין אין נתונים'}</b></div><div class="highlight">דורשת תשומת לב<b>${attention?`${esc(attention.g.title)} · ${attention.p.pct}%`:'עדיין אין נתונים'}</b></div></div><label class="field">מה עזר לי השבוע?</label><textarea id="helpedInput" placeholder="רגע, הרגל או החלטה שעזרו…">${esc(review.helped||'')}</textarea><label class="field">מה אשנה בשבוע הבא?</label><textarea id="changeInput" placeholder="שינוי קטן ומעשי אחד…">${esc(review.change||'')}</textarea><button class="primary" id="saveReview" style="width:100%;margin-top:9px">שמירת הסיכום</button>`;
@@ -346,12 +383,15 @@
       $('noteList').innerHTML=notes.length?notes.map(n=>{const goal=state.goals.find(g=>g.id===n.goalId);return `<article class="insightCard"><div class="insightTop"><button class="star ${n.favorite?'on':''}" data-favorite="${esc(n.id)}" aria-label="${n.favorite?'הסר ממועדפים':'הוסף למועדפים'}">★</button><div class="insightText">${formatInsight(n.t)}</div></div><div class="insightMeta">${n.tag?`<span class="badge">#${esc(n.tag)}</span>`:''}${goal?`<span class="badge sage">🎯 ${esc(goal.title)}</span>`:''}<span class="badge plum">${fmtDate(n.d)}</span>${n.src?`<span class="badge">${esc(n.src)}</span>`:''}</div><div class="insightActions"><button class="chipBtn" data-action-note="${esc(n.id)}">הפוך למטרה</button><button class="chipBtn" data-edit-note="${esc(n.id)}">עריכה</button><button class="chipBtn" data-delete-note="${esc(n.id)}">מחיקה</button></div></article>`}).join(''):'<div class="empty" style="margin-top:12px">לא נמצאו תובנות. שמור רעיון ראשון כדי להתחיל לבנות ספריית למידה אישית.</div>';
     }
     function drawSettings(){const active=activeGoals(),archived=state.goals.filter(g=>g.archivedAt);$('manageGoals').innerHTML=active.length?active.map(g=>`<div class="settingRow"><div class="settingInfo"><b>${esc(g.title)}</b><small>${isPausedNow(g)?'מושהית · ':''}${esc(scheduleLabel(g))}</small></div><button class="softBtn" data-edit-goal="${esc(g.id)}">עריכה</button><button class="softBtn" data-pause="${esc(g.id)}">${isPausedNow(g)?'המשך':'השהה'}</button><button class="dangerBtn" data-archive="${esc(g.id)}">ארכוב</button></div>`).join(''):'<div class="empty">אין מטרות פעילות.</div>';$('archiveList').innerHTML=archived.length?archived.map(g=>`<div class="settingRow"><div class="settingInfo"><b>${esc(g.title)}</b><small>${Object.keys(g.done||{}).length} השלמות נשמרו בהיסטוריה</small></div><button class="softBtn" data-restore="${esc(g.id)}">שחזור</button></div>`).join(''):'<div class="empty">הארכיון ריק.</div>'}
-    function drawAll(){drawHeader();drawGoals();drawWeekly();drawNotes();drawSettings()}
+    function drawAll(){drawHeader();drawGoals();drawTasks();drawWeekly();drawNotes();drawSettings()}
 
     function openGoalModal(prefill='',id=null){editingGoalId=id;const g=id?state.goals.find(x=>x.id===id):null;$('goalModalTitle').textContent=g?'עריכת מטרה':'מטרה חדשה';$('goalTitle').value=g?g.title:prefill;const sc=g?scheduleOn(g,localDate()):{type:'days',days:[0,1,2,3,4,5,6],target:3};$('frequency').value=sc.type==='weekly'?'weekly':(sc.days.length===7?'daily':'days');$('weeklyTarget').value=sc.target||3;$('daysPick').innerHTML=DAY_SHORT.map((d,i)=>`<button type="button" class="pickDay ${sc.days?.includes(i)?'on':''}" data-pick-day="${i}">${d}</button>`).join('');toggleFrequency();$('goalModal').classList.add('open');setTimeout(()=>$('goalTitle').focus(),40)}
     function toggleFrequency(){$('daysField').classList.toggle('hidden',$('frequency').value!=='days');$('weeklyField').classList.toggle('hidden',$('frequency').value!=='weekly')}
     function saveGoal(e){e.preventDefault();const title=$('goalTitle').value.trim();if(!title)return;const type=$('frequency').value,days=type==='daily'?[0,1,2,3,4,5,6]:[...document.querySelectorAll('.pickDay.on')].map(b=>Number(b.dataset.pickDay)),target=Math.max(1,Math.min(7,Number($('weeklyTarget').value)||3));if(type==='days'&&!days.length){showToast('בחר לפחות יום אחד');return}const schedule={from:localDate(),type:type==='weekly'?'weekly':'days',days:days.length?days:[0,1,2,3,4,5,6],target};if(editingGoalId){const g=state.goals.find(x=>x.id===editingGoalId);g.title=title;const old=scheduleOn(g,localDate());if(JSON.stringify({type:old.type,days:old.days,target:old.target})!==JSON.stringify({type:schedule.type,days:schedule.days,target:schedule.target})){g.scheduleHistory=g.scheduleHistory.filter(x=>x.from!==schedule.from);g.scheduleHistory.push(schedule);g.scheduleHistory.sort((a,b)=>a.from.localeCompare(b.from))}}else state.goals.push({id:uid('g'),title,createdAt:localDate(),done:{},scheduleHistory:[schedule],pauseRanges:[],archivedAt:null});$('goalModal').classList.remove('open');queueSave();drawAll();showToast(editingGoalId?'המטרה עודכנה':'המטרה נוספה')}
     function toggleGoal(id,k){const g=state.goals.find(x=>x.id===id);if(!g||!scheduledOn(g,k))return;g.done=g.done||{};g.done[k]?delete g.done[k]:g.done[k]=1;queueSave();drawAll()}
+    function saveTask(e){e.preventDefault();const title=$('taskInput').value.trim();if(!title)return;state.tasks.push({id:uid('t'),title,date:localDate(),done:false,createdAt:new Date().toISOString(),completedAt:null});e.target.reset();selectedTaskDate=localDate();queueSave();drawTasks();showToast('המשימה נוספה להיום')}
+    function toggleTask(id){const task=state.tasks.find(t=>t.id===id);if(!task)return;task.done=!task.done;task.completedAt=task.done?new Date().toISOString():null;queueSave();drawTasks();showToast(task.done?'המשימה הושלמה ✓':'הסימון בוטל')}
+    function deleteTask(id){const task=state.tasks.find(t=>t.id===id);if(!task)return;state.tasks=state.tasks.filter(t=>t.id!==id);queueSave();drawTasks();showToast('המשימה נמחקה')}
     function openDetails(id){const g=state.goals.find(x=>x.id===id);if(!g)return;const end=addDays(weekEnd(),0),start=addDays(weekStart(),-77),p=performance(g,start,localDate()),st=streakStats(g),weeks=[];for(let i=11;i>=0;i--){const wk=addDays(weekStart(),-7*i),wp=weekPerformance(g,wk);weeks.push({wk,pct:wp.pct})}const cells=dateRange(start,end).map(k=>{const future=k>localDate(),scheduled=scheduledOn(g,k),done=g.done?.[k],cls=future?'future':done?'done':scheduled?'missed':'off';return `<button class="heat ${cls}" data-heat-day="${k}" aria-label="${fmtDate(k,{weekday:'long',day:'numeric',month:'long'})}: ${done?'הושלם':scheduled?'לא הושלם':'לא תוכנן'}"></button>`}).join('');$('detailTitle').textContent=g.title;$('detailContent').innerHTML=`<div class="weeklyGrid"><div class="miniStat"><b>${p.pct}%</b><span>12 שבועות</span></div><div class="miniStat"><b>${st.current}</b><span>רצף נוכחי</span></div><div class="miniStat"><b>${st.best}</b><span>שיא ${st.unit}</span></div></div><h3 style="font-size:14px">מפת עקביות · 12 שבועות</h3><div class="heatmap">${cells}</div><div class="legend"><span><i style="background:var(--sage)"></i>הושלם ✓</span><span><i style="background:#f8dfd5"></i>מתוכנן ולא הושלם</span><span><i style="background:#f5eee8"></i>לא תוכנן</span></div><h3 style="font-size:14px">עקביות שבועית</h3><div class="barChart">${weeks.map(w=>`<div class="bar" style="height:${Math.max(3,w.pct)}%" data-label="${fromKey(w.wk).getDate()}" title="${fmtDate(w.wk)}: ${w.pct}%"></div>`).join('')}</div><p style="color:var(--muted);font-size:11px;margin-top:24px">החישוב כולל רק הזדמנויות שתוכננו לאחר יצירת המטרה. שינויי תדירות, השהיות וארכוב אינם משנים את ההיסטוריה הקודמת.</p>`;$('detailModal').classList.add('open')}
 
     document.addEventListener('click',e=>{
@@ -359,6 +399,9 @@
       if(b.dataset.addGoal!==undefined)openGoalModal();
       if(b.dataset.close)$(b.dataset.close).classList.remove('open');
       if(b.dataset.toggle)toggleGoal(b.dataset.toggle,b.dataset.day);
+      if(b.dataset.toggleTask)toggleTask(b.dataset.toggleTask);
+      if(b.dataset.deleteTask)deleteTask(b.dataset.deleteTask);
+      if(b.dataset.taskDate){selectedTaskDate=b.dataset.taskDate;drawTasks()}
       if(b.dataset.detail)openDetails(b.dataset.detail);
       if(b.dataset.pickDay!==undefined)b.classList.toggle('on');
       if(b.dataset.editGoal)openGoalModal('',b.dataset.editGoal);
@@ -373,12 +416,13 @@
     });
     $('frequency').onchange=toggleFrequency;$('goalEditor').onsubmit=saveGoal;
     $('lockForm').onsubmit=async e=>{e.preventDefault();$('lockError').textContent='';$('unlockBtn').disabled=true;try{await unlock($('passInput').value)}catch(err){$('lockError').textContent=err.message||'לא ניתן לפתוח את הנתונים'}finally{$('unlockBtn').disabled=false}};
-    $('bottomNav').onclick=e=>{const b=e.target.closest('[data-view]');if(!b)return;document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.navBtn').forEach(x=>x.classList.toggle('active',x===b));$(`${b.dataset.view}View`).classList.add('active');scrollTo({top:0,behavior:'smooth'});if(b.dataset.view==='settings')drawSettings()};
+    $('bottomNav').onclick=e=>{const b=e.target.closest('[data-view]');if(!b)return;document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.navBtn').forEach(x=>x.classList.toggle('active',x===b));$(`${b.dataset.view}View`).classList.add('active');scrollTo({top:0,behavior:'smooth'});if(b.dataset.view==='tasks')drawTasks();if(b.dataset.view==='settings')drawSettings()};
+    $('taskForm').onsubmit=saveTask;$('taskHistoryDate').onchange=e=>{if(!e.target.value)return;selectedTaskDate=e.target.value>localDate()?localDate():e.target.value;drawTasks()};$('taskPrevDay').onclick=()=>{selectedTaskDate=addDays(selectedTaskDate,-1);drawTasks()};$('taskNextDay').onclick=()=>{selectedTaskDate=addDays(selectedTaskDate,1);drawTasks()};
     $('boldNote').onclick=toggleNoteBold;$('bulletNote').onclick=toggleNoteBullets;$('noteInput').oninput=updateNotePreview;$('noteInput').onkeydown=e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='b'){e.preventDefault();toggleNoteBold()}};
     $('noteForm').onsubmit=e=>{e.preventDefault();const data={t:$('noteInput').value.trim(),src:$('sourceInput').value.trim(),tag:$('tagInput').value.trim().replace(/^#/,'').slice(0,30),goalId:$('noteGoal').value};if(editingNoteId){const n=state.notes.find(x=>x.id===editingNoteId);Object.assign(n,data);editingNoteId=null;$('noteSave').textContent='שמירת תובנה'}else state.notes.push({id:uid('n'),...data,favorite:false,d:localDate()});e.target.reset();updateNotePreview();queueSave();drawNotes();showToast('התובנה נשמרה')};
     $('noteSearch').oninput=drawNotes;$('tagFilter').onchange=drawNotes;
     $('exportJson').onclick=()=>download(`goals-backup-${localDate()}.json`,'application/json',JSON.stringify(state,null,2));
-    $('exportCsv').onclick=()=>{const rows=[['goal','date','scheduled','completed','schedule','archived']];state.goals.forEach(g=>{const start=g.createdAt>addDays(localDate(),-364)?g.createdAt:addDays(localDate(),-364),dates=new Set([...Object.keys(g.done||{}),...dateRange(start,localDate())]);[...dates].sort().forEach(k=>{if(k<g.createdAt)return;const scheduled=scheduledOn(g,k);if(!scheduled&&!g.done?.[k])return;rows.push([g.title,k,scheduled?1:0,g.done?.[k]?1:0,scheduleLabel(g,k),g.archivedAt?1:0])})});const csv='\ufeff'+rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(',')).join('\n');download(`goals-history-${localDate()}.csv`,'text/csv;charset=utf-8',csv)};
+    $('exportCsv').onclick=()=>{const rows=[['type','title','date','scheduled','completed','schedule','archived']];state.goals.forEach(g=>{const start=g.createdAt>addDays(localDate(),-364)?g.createdAt:addDays(localDate(),-364),dates=new Set([...Object.keys(g.done||{}),...dateRange(start,localDate())]);[...dates].sort().forEach(k=>{if(k<g.createdAt)return;const scheduled=scheduledOn(g,k);if(!scheduled&&!g.done?.[k])return;rows.push(['goal',g.title,k,scheduled?1:0,g.done?.[k]?1:0,scheduleLabel(g,k),g.archivedAt?1:0])})});state.tasks.forEach(t=>rows.push(['task',t.title,t.date,1,t.done?1:0,'one-time',0]));const csv='\ufeff'+rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(',')).join('\n');download(`goals-history-${localDate()}.csv`,'text/csv;charset=utf-8',csv)};
     $('importBtn').onclick=()=>$('importFile').click();$('importFile').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{const data=normalizeState(JSON.parse(await file.text()));state=data;await queueSave();drawAll();showToast('הגיבוי יובא בהצלחה')}catch{showToast('קובץ הגיבוי אינו תקין')}e.target.value=''};
     $('lockNow').onclick=()=>{cryptoKey=null;keySalt=null;sessionStorage.removeItem('goalsUnlocked');location.reload()};
     document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
