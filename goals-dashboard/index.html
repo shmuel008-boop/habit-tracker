@@ -75,6 +75,7 @@
     .formatBar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:7px}.formatBtn{min-height:44px;padding:7px 11px;border:1px solid #ead3c2;background:#fff;color:#805746;font-size:12px}.formatBtn strong{font-size:16px}.formatHint{display:block;color:var(--muted);font-size:10px;line-height:1.45;padding:6px 3px 1px}
     .notePreview{margin-top:8px;padding:10px 12px;border-radius:12px;background:#fff;border:1px dashed #e3c8b5;color:var(--ink);line-height:1.6;font-size:13px}.notePreview:before{content:"תצוגה מקדימה";display:block;color:var(--muted);font-size:9px;font-weight:800;margin-bottom:4px}.notePreview.hidden{display:none}
     .insightTools{display:grid;grid-template-columns:1fr 135px;gap:8px;margin:15px 0 4px}
+    .insightInbox{display:flex;align-items:flex-start;gap:10px;background:linear-gradient(135deg,#fff3de,#ffe7d7);border:1px solid var(--gold);border-radius:16px;padding:12px 13px;margin-bottom:13px}.insightInbox .insightInboxCopy{flex:1;min-width:0}.insightInbox b{display:block;font-size:13px}.insightInbox small{display:block;color:var(--muted);font-size:11px;line-height:1.5;margin-top:4px}
     .insightCard{padding:13px;margin-top:10px}.insightTop{display:flex;align-items:flex-start;gap:8px}.insightText{flex:1;line-height:1.6;overflow-wrap:anywhere}.insightText div+div{margin-top:3px}.insightText ul,.notePreview ul{margin:6px 0;padding:0 20px 0 0}.insightText li,.notePreview li{margin:3px 0}.insightText strong,.notePreview strong{color:#9f493d;font-weight:900}.star{border:0;background:transparent;color:#c2a88f;font-size:22px;padding:0;min-width:32px}.star.on{color:var(--gold)}
     .insightMeta{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}.insightActions{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.chipBtn{min-height:36px;background:#fff0e6;color:#8d5544;padding:6px 9px;font-size:11px}
     .settingsGroup{margin-bottom:18px}.settingsGroup h2{font-size:16px;margin:0 0 10px}.settingRow{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px dashed var(--line)}.settingRow:last-child{border:0}.settingInfo{flex:1;min-width:0}.settingInfo b{display:block}.settingInfo small{display:block;color:var(--muted);margin-top:3px}.reminderTimes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}.reminderTimes label{display:block;color:var(--muted);font-size:11px}.reminderTimes input{margin-top:5px}.reminderHelp{color:var(--muted);font-size:11px;line-height:1.5;margin:10px 0 0}
@@ -180,6 +181,13 @@
     <section id="notesView" class="view">
       <div class="sectionHead"><h2>מה למדתי</h2><small>תובנות שהופכות לפעולה</small></div>
       <section class="panel notesPanel">
+        <div id="insightInbox" class="insightInbox hidden">
+          <div class="insightInboxCopy">
+            <b id="insightInboxTitle">✨ שיקוף חדש מהקיצור</b>
+            <small>הטקסט נטען לטופס שלמטה. ערוך אם צריך ולחץ "שמירת תובנה".</small>
+          </div>
+          <button type="button" class="softBtn" id="insightInboxDismiss">התעלם</button>
+        </div>
         <form id="noteForm" class="formGrid">
           <div class="wide noteComposer">
             <div class="formatBar" role="toolbar" aria-label="עיצוב התובנה">
@@ -262,6 +270,8 @@
     'use strict';
     const ENDPOINT='https://script.google.com/macros/s/AKfycbzETjNu8h8Vo23sNWQIbEMS_T3yVuc9y_h4wbYG5OlVf-NI9Ud82r5ipAjXLuwsej1F/exec';
     const LOCAL_ONLY=['localhost','127.0.0.1'].includes(location.hostname);
+    const INBOX_KEY='goalsIncomingInsight';
+    const appliedInsights=new Set();
     const $=id=>document.getElementById(id);
     const DAY_NAMES=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
     const DAY_SHORT=['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ש׳'];
@@ -285,6 +295,33 @@
     }
     function plainInsight(x=''){return String(x).replace(/\*\*(.+?)\*\*/g,'$1').replace(/^\s*•\s*/gm,'').trim()}
     function updateNotePreview(){const value=$('noteInput').value.trim(),preview=$('notePreview');preview.classList.toggle('hidden',!value);preview.innerHTML=value?formatInsight(value):''}
+    function goToView(name){const btn=document.querySelector(`.navBtn[data-view="${name}"]`),view=$(`${name}View`);if(!btn||!view)return;document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.navBtn').forEach(x=>x.classList.toggle('active',x===btn));view.classList.add('active')}
+    function readInbox(){try{const x=JSON.parse(sessionStorage.getItem(INBOX_KEY)||'[]');return Array.isArray(x)?x:[]}catch{return []}}
+    function writeInbox(list){try{if(list.length)sessionStorage.setItem(INBOX_KEY,JSON.stringify(list));else sessionStorage.removeItem(INBOX_KEY)}catch{}}
+    function hashValue(raw,key){const m=raw.match(new RegExp(`(?:^|&)${key}=([^&]*)`));if(!m)return '';try{return decodeURIComponent(m[1])}catch{return ''}}
+    // הקיצור באייפון פותח את הדף עם הטקסט אחרי # — fragment לא נשלח לשרת, כך שהשיקוף נשאר במכשיר.
+    function captureIncomingInsight(){
+      const raw=location.hash.replace(/^#/,'');if(!raw)return;
+      const text=(hashValue(raw,'note')||hashValue(raw,'insight')).trim();
+      history.replaceState(null,'',location.pathname+location.search);
+      if(!text)return;
+      const inbox=readInbox();
+      inbox.push({id:uid('in'),t:text.slice(0,4000),src:(hashValue(raw,'src')||'שיקוף קולי').slice(0,60),tag:(hashValue(raw,'tag')||'שיקוף').replace(/^#/,'').slice(0,30)});
+      writeInbox(inbox);
+    }
+    function clearInsightInbox(){writeInbox([]);appliedInsights.clear();$('insightInbox').classList.add('hidden')}
+    function applyIncomingInsight(){
+      const inbox=readInbox();if(!inbox.length)return;
+      const fresh=inbox.filter(x=>!appliedInsights.has(x.id));if(!fresh.length)return;
+      fresh.forEach(x=>appliedInsights.add(x.id));
+      const text=fresh.map(x=>x.t).join('\n\n'),current=$('noteInput').value.trim();
+      $('noteInput').value=current?`${current}\n\n${text}`:text;
+      if(!$('sourceInput').value.trim())$('sourceInput').value=fresh[0].src;
+      if(!$('tagInput').value.trim())$('tagInput').value=fresh[0].tag;
+      $('insightInboxTitle').textContent=inbox.length>1?`✨ ${inbox.length} שיקופים חדשים מהקיצור`:'✨ שיקוף חדש מהקיצור';
+      $('insightInbox').classList.remove('hidden');
+      updateNotePreview();goToView('notes');scrollTo({top:0,behavior:'smooth'});
+    }
     function toggleNoteBold(){const input=$('noteInput'),start=input.selectionStart,end=input.selectionEnd,selected=input.value.slice(start,end);if(!selected){input.setRangeText('****',start,end,'end');input.setSelectionRange(start+2,start+2)}else{const marked=selected.startsWith('**')&&selected.endsWith('**'),next=marked?selected.slice(2,-2):`**${selected}**`;input.setRangeText(next,start,end,'select');if(!marked)input.setSelectionRange(start+2,start+2+selected.length)}input.focus();updateNotePreview()}
     function toggleNoteBullets(){const input=$('noteInput'),value=input.value,start=value.lastIndexOf('\n',Math.max(0,input.selectionStart-1))+1,nextBreak=value.indexOf('\n',input.selectionEnd),end=nextBreak<0?value.length:nextBreak,lines=value.slice(start,end).split('\n'),filled=lines.filter(line=>line.trim());if(!filled.length){input.setRangeText('• ',start,end,'end');input.focus();updateNotePreview();return}const remove=filled.every(line=>/^\s*•\s+/.test(line)),next=lines.map(line=>{if(!line.trim())return line;if(remove)return line.replace(/^(\s*)•\s+/,'$1');return /^\s*•\s+/.test(line)?line:line.replace(/^(\s*)/,'$1• ')}).join('\n');input.setRangeText(next,start,end,'select');input.focus();updateNotePreview()}
     function uid(prefix){return `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2,7)}`}
@@ -377,7 +414,7 @@
           const local=localCandidate();if(local?.encrypted&&local!==remoteCandidate){try{state=await decryptEnvelope(local,cryptoKey);remoteCandidate=local}catch{throw new Error('הקוד שגוי או שהמידע נפגם')}}else throw new Error('הקוד שגוי או שהמידע נפגם')
         }
       }
-      sessionStorage.setItem('goalsUnlocked','1');localStorage.removeItem('goalsWarm');$('lockScreen').classList.add('hidden');$('app').removeAttribute('aria-hidden');drawAll();
+      sessionStorage.setItem('goalsUnlocked','1');localStorage.removeItem('goalsWarm');$('lockScreen').classList.add('hidden');$('app').removeAttribute('aria-hidden');drawAll();applyIncomingInsight();
     }
     function queueSave(){saveChain=saveChain.then(()=>saveNow(false)).catch(()=>{$('sync').textContent='נשמר מוצפן במכשיר · אין חיבור לענן'});return saveChain}
     async function saveNow(initial=false){
@@ -463,13 +500,17 @@
     $('taskForm').onsubmit=saveTask;$('taskHistoryDate').onchange=e=>{if(!e.target.value)return;selectedTaskDate=e.target.value>localDate()?localDate():e.target.value;drawTasks()};$('taskPrevDay').onclick=()=>{selectedTaskDate=addDays(selectedTaskDate,-1);drawTasks()};$('taskNextDay').onclick=()=>{selectedTaskDate=addDays(selectedTaskDate,1);drawTasks()};
     $('reminderMorning').onchange=saveReminderTimes;$('reminderEvening').onchange=saveReminderTimes;$('downloadCalendarReminders').onclick=downloadCalendarReminders;
     $('boldNote').onclick=toggleNoteBold;$('bulletNote').onclick=toggleNoteBullets;$('noteInput').oninput=updateNotePreview;$('noteInput').onkeydown=e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='b'){e.preventDefault();toggleNoteBold()}};
-    $('noteForm').onsubmit=e=>{e.preventDefault();const data={t:$('noteInput').value.trim(),src:$('sourceInput').value.trim(),tag:$('tagInput').value.trim().replace(/^#/,'').slice(0,30),goalId:$('noteGoal').value};if(editingNoteId){const n=state.notes.find(x=>x.id===editingNoteId);Object.assign(n,data);editingNoteId=null;$('noteSave').textContent='שמירת תובנה'}else state.notes.push({id:uid('n'),...data,favorite:false,d:localDate()});e.target.reset();updateNotePreview();queueSave();drawNotes();showToast('התובנה נשמרה')};
+    $('noteForm').onsubmit=e=>{e.preventDefault();const data={t:$('noteInput').value.trim(),src:$('sourceInput').value.trim(),tag:$('tagInput').value.trim().replace(/^#/,'').slice(0,30),goalId:$('noteGoal').value};if(editingNoteId){const n=state.notes.find(x=>x.id===editingNoteId);Object.assign(n,data);editingNoteId=null;$('noteSave').textContent='שמירת תובנה'}else state.notes.push({id:uid('n'),...data,favorite:false,d:localDate()});e.target.reset();clearInsightInbox();updateNotePreview();queueSave();drawNotes();showToast('התובנה נשמרה')};
+    $('insightInboxDismiss').onclick=()=>{clearInsightInbox();$('noteForm').reset();editingNoteId=null;$('noteSave').textContent='שמירת תובנה';updateNotePreview();showToast('השיקוף נמחק ולא נשמר')};
     $('noteSearch').oninput=drawNotes;$('tagFilter').onchange=drawNotes;
     $('exportJson').onclick=()=>download(`goals-backup-${localDate()}.json`,'application/json',JSON.stringify(state,null,2));
     $('exportCsv').onclick=()=>{const rows=[['type','title','date','scheduled','completed','schedule','archived']];state.goals.forEach(g=>{const start=g.createdAt>addDays(localDate(),-364)?g.createdAt:addDays(localDate(),-364),dates=new Set([...Object.keys(g.done||{}),...dateRange(start,localDate())]);[...dates].sort().forEach(k=>{if(k<g.createdAt)return;const scheduled=scheduledOn(g,k);if(!scheduled&&!g.done?.[k])return;rows.push(['goal',g.title,k,scheduled?1:0,g.done?.[k]?1:0,scheduleLabel(g,k),g.archivedAt?1:0])})});state.tasks.forEach(t=>rows.push(['task',t.title,t.date,1,t.done?1:0,'one-time',0]));const csv='\ufeff'+rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(',')).join('\n');download(`goals-history-${localDate()}.csv`,'text/csv;charset=utf-8',csv)};
     $('importBtn').onclick=()=>$('importFile').click();$('importFile').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{const data=normalizeState(JSON.parse(await file.text()));state=data;await queueSave();drawAll();showToast('הגיבוי יובא בהצלחה')}catch{showToast('קובץ הגיבוי אינו תקין')}e.target.value=''};
     $('lockNow').onclick=()=>{cryptoKey=null;keySalt=null;sessionStorage.removeItem('goalsUnlocked');location.reload()};
     document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
+    // הקיצור עשוי לפתוח את הכתובת כשהלשונית כבר פתוחה — אז אין טעינה מחדש, רק שינוי fragment.
+    window.addEventListener('hashchange',()=>{captureIncomingInsight();if(cryptoKey&&state)applyIncomingInsight()});
+    captureIncomingInsight();
     prepareLock();
   })();
   </script>
